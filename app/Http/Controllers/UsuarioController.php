@@ -12,11 +12,11 @@ class UsuarioController extends Controller
     public function funListar(){
 
         // SQL
-        $users = DB::select("select * from users");
+        // $users = DB::select("select * from users");
         // Query Builder
         // $users = DB::table("users")->get();
         // Eloquent ORM
-        // $users = User::get();
+        $users = User::get();
 
         return response()->json($users, 200);
     }
