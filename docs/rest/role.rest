@@ -1,0 +1,11 @@
+GET http://127.0.0.1:8000/api/role
+Accept: application/json
+
+### Crear Role
+POST http://127.0.0.1:8000/api/role
+Content-Type: application/json
+
+{
+    "nombre": "CAJERO",
+    "descripcion": "Este role es para Ventas"
+}

@@ -1,0 +1,30 @@
+GET http://127.0.0.1:8000/api/categoria
+Accept: application/json
+Authorization: Bearer 2|rWiVIRi3t0MAZh5yf2MICa5O4sIHuzwoZkuKmqAFc17bff6c
+
+### Guardar categoria
+POST http://127.0.0.1:8000/api/categoria
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 2|rWiVIRi3t0MAZh5yf2MICa5O4sIHuzwoZkuKmqAFc17bff6c
+
+{
+    "nombre": "JUGUETES"
+}
+
+### mostrar categoria
+GET http://127.0.0.1:8000/api/categoria/1
+Accept: application/json
+Authorization: Bearer 2|rWiVIRi3t0MAZh5yf2MICa5O4sIHuzwoZkuKmqAFc17bff6c
+
+### modificar categoria
+PUT http://127.0.0.1:8000/api/categoria/1
+Accept: application/json
+Authorization: Bearer 2|rWiVIRi3t0MAZh5yf2MICa5O4sIHuzwoZkuKmqAFc17bff6c
+Content-Type: application/json
+
+{
+  "nombre": "ELECTRONICOS MODIFICADO",
+  "descripcion": "Equipos para computaci\u00f3n"
+}
+

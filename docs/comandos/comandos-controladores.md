@@ -1,0 +1,11 @@
+php artisan make:controller AlmacenController --api
+php artisan make:controller CategoriaController --api
+php artisan make:controller ContactoController --api
+php artisan make:controller EntidadComercialController --api
+php artisan make:controller NotaController --api
+php artisan make:controller PermisoController --api
+php artisan make:controller PersonaController --api
+php artisan make:controller ProductoController --api
+php artisan make:controller RoleController --api
+php artisan make:controller SucursalController --api
+php artisan make:controller UserController --api
