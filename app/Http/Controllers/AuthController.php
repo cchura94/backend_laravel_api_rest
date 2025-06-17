@@ -21,7 +21,21 @@ class AuthController extends Controller
         // generar TOKEN
         $token = $request->user()->createToken("Auth Token")->plainTextToken;
 
-        return response()->json(["access_token" => $token, "user" => $request->user()], 201);
+        $usuario = $request->user();
+        $array_permisos = [];
+        if(count($usuario->roles) > 0){
+            $array_permisos = $usuario->roles()
+                                        ->with('permisos')
+                                        ->get()
+                                        ->pluck('permisos')
+                                        ->flatten()
+                                        ->map(function ($permiso){
+                                            return array('action'=> $permiso->action, 'subject' => $permiso->subject, 'nombre' => $permiso->nombre);
+                                        })->unique();
+        }
+
+
+        return response()->json(["access_token" => $token, "user" => $request->user(), "permisos" => $array_permisos], 201);
 
     }
 

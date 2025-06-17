@@ -56,6 +56,11 @@ Route::prefix("auth")->group(function() {
 
 Route::middleware("auth:sanctum")->group(function(){
 
+    // Asignar Role a usuario
+    Route::post("/users/{id}/roles", [UsuarioController::class, "funActualizarRoles"]);
+    // Asignar Permisos a role
+    Route::post("/role/{id}/permisos", [RoleController::class, "funActualizarPermisos"]);
+
     // CRUD USUARIO
     Route::get("/users", [UsuarioController::class, "funListar"]);
     Route::post("/users", [UsuarioController::class, "funGuardar"]);
@@ -63,6 +68,9 @@ Route::middleware("auth:sanctum")->group(function(){
     Route::put("/users/{id}", [UsuarioController::class, "funModificar"]);
     Route::delete("/users/{id}", [UsuarioController::class, "funEliminar"]);
     
+    // Registro de producto con Subida de Imagen
+    Route::post("producto/imagen", [ProductoController::class, "guardarProductoImagen"]);
+
     // CRUDs
     Route::apiResource("role", RoleController::class);
     Route::apiResource('almacen', AlmacenController::class);
@@ -75,3 +83,7 @@ Route::middleware("auth:sanctum")->group(function(){
     Route::apiResource('producto', ProductoController::class);
     Route::apiResource('sucursal', SucursalController::class);
 });
+
+Route::get("/no-autorizado", function (){
+    return response()->json(["message" => "No Autorizado para ver el recurso"], 401);
+})->name('login');

@@ -1,0 +1,15 @@
+GET http://127.0.0.1:8000/api/permiso
+Authorization: Bearer 5|USrGc9Kl0v2Nj7oIHnSspoMOBskKZlblozb2XGmQf9b5e68c
+
+### guardar Permiso
+POST http://127.0.0.1:8000/api/permiso
+Authorization: Bearer 5|USrGc9Kl0v2Nj7oIHnSspoMOBskKZlblozb2XGmQf9b5e68c
+Content-Type: application/json
+Accept: application/json
+
+{
+    "nombre": "eliminar-role",
+    "descripcion": "Eliminar roles",
+    "subject": "role",
+    "action": "delete"
+}

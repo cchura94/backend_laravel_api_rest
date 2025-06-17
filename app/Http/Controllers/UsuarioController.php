@@ -9,14 +9,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    public function funListar(){
+    public function funListar(Request $request){
 
         // SQL
         // $users = DB::select("select * from users");
         // Query Builder
         // $users = DB::table("users")->get();
         // Eloquent ORM
-        $users = User::get();
+
+        $limit = isset($request->limit)?$request->limit:10;
+        $users = User::orderBy('id', 'desc')
+                        ->where("email", "like", "%$request->buscar%")
+                        ->with("roles")
+                        ->paginate($limit);
+
 
         return response()->json($users, 200);
     }
@@ -74,6 +80,8 @@ class UsuarioController extends Controller
         }
         $user->update();
 
+        // asignar roles ....
+
         return response()->json(["mensaje" => "Usuario Actualizado"], 201);
     }
 
@@ -84,4 +92,11 @@ class UsuarioController extends Controller
         return response()->json(["mensaje" => "Usuario Eliminado"], 200);
 
     } 
+
+    public function funActualizarRoles($id, Request $request){
+        $usuario = User::find($id);
+        $usuario->roles()->sync($request["roles_id"]);
+
+        return response()->json(["mensaje" => "Roles actualizados"]);
+    }
 }

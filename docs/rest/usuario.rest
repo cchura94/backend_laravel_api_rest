@@ -1,16 +1,17 @@
 ### Listar usuario
-GET http://127.0.0.1:8000/api/users
+GET http://127.0.0.1:8000/api/users?limit=10&page=1
 Accept: application/json
-Authorization: Bearer 1|HYRHiFcxyfFqS3f4AJXMNV5tzOUjzvIU3WADfk30b40d8803
+Authorization: Bearer 5|USrGc9Kl0v2Nj7oIHnSspoMOBskKZlblozb2XGmQf9b5e68c
 
 ### guardar usuario
 POST http://127.0.0.1:8000/api/users
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer 4|gU8l9e21B7Y7PRgSea67kAdlxH7AE0vgnf0QBJLg3cddce98
 
 {
-    "name": "Cristian",
-    "email": "cristian@mail.com",
+    "name": "Cristian2",
+    "email": "cristian2@mail.com",
     "password": "cristian54321"
 }
 
@@ -30,3 +31,12 @@ Content-Type: application/json
 ### Eliminar usuario por id
 DELETE http://127.0.0.1:8000/api/users/3
 
+### Asignar roles a User
+POST http://127.0.0.1:8000/api/users/2/roles
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 5|USrGc9Kl0v2Nj7oIHnSspoMOBskKZlblozb2XGmQf9b5e68c
+
+{
+    "roles_id": [2, 3]
+}

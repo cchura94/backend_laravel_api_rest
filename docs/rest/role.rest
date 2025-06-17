@@ -1,11 +1,28 @@
 GET http://127.0.0.1:8000/api/role
 Accept: application/json
+Authorization: Bearer 19|PHAYB1PUGlnsgGM6K4XF3OM4QcGCgP2qyGXgGsTl6f6f8571
 
 ### Crear Role
 POST http://127.0.0.1:8000/api/role
 Content-Type: application/json
+Authorization: Bearer 19|PHAYB1PUGlnsgGM6K4XF3OM4QcGCgP2qyGXgGsTl6f6f8571
+Accept: application/json
 
 {
-    "nombre": "CAJERO",
+    "nombre": "CAJERO2",
     "descripcion": "Este role es para Ventas"
+}
+
+### Mostrar
+GET http://127.0.0.1:8000/api/role/3
+Authorization: Bearer 5|USrGc9Kl0v2Nj7oIHnSspoMOBskKZlblozb2XGmQf9b5e68c
+
+### asignar permisos a Role
+POST http://127.0.0.1:8000/api/role/2/permisos
+Content-Type: application/json
+Authorization: Bearer 5|USrGc9Kl0v2Nj7oIHnSspoMOBskKZlblozb2XGmQf9b5e68c
+Accept: application/json
+
+{
+    "permisos_id": [1, 2, 3, 4]
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
@@ -12,7 +13,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return response()->json(Role::get());
+        Gate::authorize('listar-role');
+        
+        $roles = Role::with(["permisos"])->get();
+        return response()->json($roles);
     }
 
     /**
@@ -20,6 +24,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+
+        Gate::authorize('create-role');
+
         $request->validate([
             "nombre" => "required"
         ]);
@@ -37,6 +44,7 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize('show-role');
         $role = Role::findOrFail($id);
 
         return response()->json($role);
@@ -47,7 +55,20 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Gate::authorize('update-role');
+
+        $request->validate([
+            "nombre" => "required"
+        ]);
+
+        
+        $role = Role::findOrFail($id);
+
+        $role->nombre = $request->nombre;
+        $role->descripcion = $request->descripcion;
+        $role->update();
+
+        return response()->json(["message" => "Role actualizado Correctamente..."]);
     }
 
     /**
@@ -56,5 +77,14 @@ class RoleController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function funActualizarPermisos($id, Request $request){
+        Gate::authorize('update-role');
+        $role = Role::find($id);
+        $role->permisos()->sync($request["permisos_id"]);
+
+        return response()->json(["mensaje" => "Permisos actualizados"]);
+
     }
 }

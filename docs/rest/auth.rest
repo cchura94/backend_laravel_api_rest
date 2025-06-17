@@ -16,8 +16,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "pedro@mail.com",
-    "password": "pedro54321"
+    "email": "cristian2@mail.com",
+    "password": "cristian54321"
 }
 
 ### Obtener el Perfil

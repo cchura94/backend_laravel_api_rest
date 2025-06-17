@@ -1,0 +1,28 @@
+GET http://127.0.0.1:8000/api/producto?page=1&limit=10&search=
+Authorization: Bearer 3|ZrBJChZKTuZdktuJtqIKiBqHikm2aa1dKNm4VQBD3ea44917
+Accept: application/json
+
+### Guardar Producto
+POST http://127.0.0.1:8000/api/producto
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 3|ZrBJChZKTuZdktuJtqIKiBqHikm2aa1dKNm4VQBD3ea44917
+
+{
+  "nombre": "A",
+  "descripcion": "Escritorio marca asus",
+  "codigo_barra": null,
+  "unidad_medida": "caja",
+  "marca": "Asus",
+  "categoria_id": 1,
+  "precio_venta_actual": "1249.98",
+  "stock_minimo": 11,
+  "imagen_url": null,
+  "activo": true,
+  "fecha_registro": "2025-06-11 00:00:00"
+}
+### mostrar
+
+GET http://127.0.0.1:8000/api/producto/4
+Authorization: Bearer 3|ZrBJChZKTuZdktuJtqIKiBqHikm2aa1dKNm4VQBD3ea44917
+Accept: application/json
