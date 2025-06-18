@@ -81,7 +81,7 @@ Route::middleware("auth:sanctum")->group(function(){
     Route::apiResource('permiso', PermisoController::class);
     Route::apiResource('persona', PermisoController::class);
     Route::apiResource('producto', ProductoController::class);
-    Route::apiResource('sucursal', SucursalController::class);
+    Route::apiResource('sucursales', SucursalController::class);
 });
 
 Route::get("/no-autorizado", function (){

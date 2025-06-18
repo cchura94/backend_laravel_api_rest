@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sucursal;
 use Illuminate\Http\Request;
 
 class SucursalController extends Controller
@@ -11,7 +12,9 @@ class SucursalController extends Controller
      */
     public function index()
     {
-        //
+        $sucursales = Sucursal::get();
+
+        return response()->json($sucursales, 200);
     }
 
     /**
@@ -19,7 +22,22 @@ class SucursalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // VALIDAR
+        $request->validate([
+            "nombre" => "required",
+            "direccion" => "required",
+            "telefono" => "required"
+        ]);
+        // guardar
+        $sucursal = new Sucursal();
+        $sucursal->nombre = $request->nombre;
+        $sucursal->direccion = $request->direccion;
+        $sucursal->telefono = $request->telefono;
+        $sucursal->ciudad = $request->ciudad;
+        $sucursal->save();
+
+        return response()->json(["message" => "Sucursal Registrado", "sucursal" => $sucursal], 201);
+
     }
 
     /**
@@ -27,7 +45,8 @@ class SucursalController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $sucursal = Sucursal::findOrFail($id);
+        return response()->json($sucursal, 200);
     }
 
     /**
@@ -35,7 +54,21 @@ class SucursalController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //validar
+        $request->validate([
+            "nombre" => "required",
+            "direccion" => "required",
+            "telefono" => "required"
+        ]);
+        // modificar
+        $sucursal = Sucursal::findOrFail($id);
+        $sucursal->nombre = $request->nombre;
+        $sucursal->direccion = $request->direccion;
+        $sucursal->telefono = $request->telefono;
+        $sucursal->ciudad = $request->ciudad;
+        $sucursal->update();
+
+        return response()->json(["message" => "Sucursal Actualizado", "sucursal" => $sucursal], 201);
     }
 
     /**

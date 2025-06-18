@@ -1,0 +1,40 @@
+### Listar todos los almacenes
+GET http://127.0.0.1:8000/api/almacen
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+### Obtener almacenes por sucursal
+GET http://127.0.0.1:8000/api/almacen?sucursal=1
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+### Guardar almacens
+
+POST http://127.0.0.1:8000/api/almacen
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+{
+    "nombre": "ALMACEN 2",
+    "codigo": "AL-02",
+    "sucursal_id": 1
+}
+
+### Mostrar
+
+GET http://127.0.0.1:8000/api/almacen/3
+Accept: application/json
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+
+### Modificar
+PUT http://127.0.0.1:8000/api/almacen/3
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+{
+  "nombre": "ALMACEN 2",
+  "codigo": "AL-02",
+  "descripcion": null,
+  "sucursal_id": 2
+}

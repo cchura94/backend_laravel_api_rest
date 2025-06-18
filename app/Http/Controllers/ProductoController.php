@@ -14,19 +14,33 @@ class ProductoController extends Controller
     {
         $limit = isset($request->limit) ? $request->limit : 10;
         $activo = isset($request->activo)?$request->activo:null;
+        $almacenID = isset($request->almacen)?$request->almacen:'';
+
+
+        $productos = Producto::query();
+
+        if(isset($activo)){
+            $productos = $productos->where('activo',"=",$request->activo);
+        }
 
         if (isset($request->search)) {
             $search = $request->search;
-            $productos = Producto::where('activo',"=",$request->activo)
+            $productos = $productos->where('activo',"=",$request->activo)
                                 ->where("nombre", "iLIKE", "%$search%")
                                 ->orwhere('marca', "iLIKE", "%$search%");
-        } else {
+        } 
 
-            $productos = Producto::where('activo',"=",$request->activo)->orderby('id', 'desc');
+        if(isset($almacenID)){
+
+            $productos = $productos->whereHas('almacens', function ($query) use ($almacenID){
+                            $query->where('almacens.id', "=", $almacenID);
+                        });
+                
         }
 
         $productos = $productos->with(['categoria'])
-            ->paginate($limit);
+                    ->orderBy('id', 'desc')
+                    ->paginate($limit);
 
         return response()->json($productos);
     }
@@ -60,6 +74,14 @@ class ProductoController extends Controller
             $prod->precio_venta_actual = $request->precio_venta_actual;
             $prod->stock_minimo = $request->stock_minimo;
             $prod->activo = $request->activo;
+
+            // subida de imagen
+            if ($file = $request->file("imagen")) {
+                $direccion_url = time() . "-" . $file->getClientOriginalName();
+                $file->move("imagenes", $direccion_url);
+                $prod->imagen_url = "imagenes/" . $direccion_url;
+            }
+
             $prod->save();
 
             return response()->json($prod);

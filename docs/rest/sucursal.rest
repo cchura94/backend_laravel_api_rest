@@ -1,0 +1,34 @@
+GET http://127.0.0.1:8000/api/sucursales
+Accept: application/json
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+### Guardar Sucursal
+POST http://127.0.0.1:8000/api/sucursales
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+{
+    "nombre": "Sucursal CENTRAL 2",
+    "direccion": "Av 654. Zona CBA", 
+    "telefono": "345675786",
+    "ciudad": "La Paz"
+}
+
+### mostrar
+GET http://127.0.0.1:8000/api/sucursales/3
+Accept: application/json
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+### MOdificar
+PUT http://127.0.0.1:8000/api/sucursales/2
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 24|HJ8Y5GDtsPP2BL6yMvvBDN2SQt5vUEFxdIE6itL7f766e3de
+
+{
+    "nombre": "Sucursal CENTRAL 2 (ACTUALIZADO)",
+    "direccion": "Av 654. Zona CBA. actualizado", 
+    "telefono": "345675786",
+    "ciudad": "La Paz"
+}
