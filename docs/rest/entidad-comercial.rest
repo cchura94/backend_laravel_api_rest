@@ -1,0 +1,58 @@
+GET http://127.0.0.1:8000/api/entidad-comercial/5
+Accept: application/json
+Authorization: Bearer 25|7jEwPf55N7ROczEmyo7xzbU6NWxoWbWJufJTqqk1c778117c
+
+
+### Cliente
+POST http://127.0.0.1:8000/api/entidad-comercial
+Accept: application/json
+Authorization: Bearer 25|7jEwPf55N7ROczEmyo7xzbU6NWxoWbWJufJTqqk1c778117c
+Content-Type: application/json
+
+{
+    "tipo": "cliente",
+    "razon_social": "Javier",
+    "ci_nit_ruc_rut": "98645335",
+    "telefono": "",
+    "direccion": "",
+    "correo": "",
+    "nombre_completo": "Javier L.",
+    "rol_contacto": "",
+    "telefono_secundario": "",
+    "correo_secundario": ""
+}
+
+### proveedor
+POST http://127.0.0.1:8000/api/entidad-comercial
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer 25|7jEwPf55N7ROczEmyo7xzbU6NWxoWbWJufJTqqk1c778117c
+
+{
+    "tipo": "proveedor",
+    "razon_social": "EMPRESA1 SRL",
+    "ci_nit_ruc_rut": "3546532168",
+    "telefono": "9879645",
+    "direccion": "Av 123. ABC",
+    "correo": "empre1@empresa.com"
+}
+
+
+### proveedor
+POST http://127.0.0.1:8000/api/entidad-comercial
+Accept: application/json
+Authorization: Bearer 25|7jEwPf55N7ROczEmyo7xzbU6NWxoWbWJufJTqqk1c778117c
+Content-Type: application/json
+
+{
+    "tipo": "proveedor",
+    "razon_social": "Maria",
+    "ci_nit_ruc_rut": "233323335",
+    "telefono": "2345678",
+    "direccion": "Zona ABC",
+    "correo": "maria@mail.com",
+    "nombre_completo": "Maria L.",
+    "rol_contacto": "VENTAS",
+    "telefono_secundario": "7778676",
+    "correo_secundario": "maria@mail.com"
+}

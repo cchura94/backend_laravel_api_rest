@@ -1,0 +1,30 @@
+POST http://127.0.0.1:8001/api/nota
+Accept: application/json
+Authorization: Bearer 26|wJGw79EECuCxiouVuEPo0QaOGnu6iyvmzmvSAsGu8cb63122
+Content-Type: application/json
+
+{
+    "codigo_nota": "N001",
+    "fecha_emision": "2025-06-06",
+    "tipo_nota": "compra",
+    "entidad_comercial_id": 3,
+    "user_id": 1,
+    "subtotal": 200,
+    "impuestos": 0,
+    "descuento_total": 30,
+    "total_calculado": 500,
+    "estado_nota": "ninguna",
+    "observaciones": "Ninguna",
+    "movimientos": [
+        {
+            "producto_id": 4,
+            "almacen_id": 1,
+            "cantidad": 10,
+            "tipo_movimiento": "ingreso",
+            "precio_unitario_compra": "200",
+            "precio_unitario_venta": "300",
+            "total_linea": "500",
+            "observaciones": "NINGUNA"
+        }
+    ]
+}

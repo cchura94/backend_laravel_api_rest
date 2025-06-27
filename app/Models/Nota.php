@@ -15,7 +15,7 @@ class Nota extends Model
     }
 
     public function almacenes(){
-        return $this->belongsToMany(Almacen::class, "movimientos")
+        return $this->belongsToMany(Almacen::class, "movimiento")
                     ->withTimestamps()
                     ->withPivot(["producto_id", "cantidad", "tipo_movimiento", "precio_unitario_compra", "precio_unitario_venta", "total_linea", "observaciones"]);
     }

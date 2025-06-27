@@ -1,23 +1,33 @@
 ### Registro de Usuario
-POST http://127.0.0.1:8000/api/auth/register
+POST http://127.0.0.1:8001/api/auth/register
 Accept: application/json
 Content-Type: application/json
 
 {
-    "name": "Pedro",
-    "email": "pedro@mail.com",
-    "password": "pedro54321",
-    "cpassword": "pedro54321"
+    "name": "Admin",
+    "email": "admin@mail.com",
+    "password": "admin54321",
+    "cpassword": "admin54321"
 }
 
 ### Autenticación (Login)
-POST http://127.0.0.1:8000/api/auth/login
+POST http://127.0.0.1:8001/api/auth/login
 Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "cristian2@mail.com",
-    "password": "cristian54321"
+    "email": "admin@mail.com",
+    "password": "admin54321"
+}
+
+### Login con Servidor
+POST https://backapi.blumbit.net/api/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "admin@mail.com",
+    "password": "admin54321"
 }
 
 ### Obtener el Perfil

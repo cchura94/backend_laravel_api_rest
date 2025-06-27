@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  backend_laravel:
+    container_name: backend_laravel
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - databasefull
+    image: backend_laravel
+    restart: unless-stopped
+    working_dir: /var/www/html/
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - backend_laravel_network
+  
+  databasefull:
+    container_name: databasefull
+    image: mysql
+    volumes:
+      - ../mysql:/var/lib/mysql
+    restart: unless-stopped
+    ports:
+      - "3333:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel_back_inventario
+      MYSQL_USER: root1
+      MYSQL_PASSWORD: root1
+    networks:
+      - backend_laravel_network
+  
+  webserverfull:
+    container_name: webserverfull
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - backend_laravel
+    restart: unless-stopped
+    ports:
+      - "88:80"
+    networks:
+      - backend_laravel_network
+
+networks:
+  backend_laravel_network:
+
+volumes:
+  mysql:
