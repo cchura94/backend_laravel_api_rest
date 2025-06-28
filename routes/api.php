@@ -19,11 +19,13 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 // Rutas
-Route::get('/saludo', function(){
+Route::get('/saludos', function(){
     return [
         "message" => "Saludos desde Api (routes/api.php)"
     ];
 });
+
+
 
 Route::get('/nombre/{nom}', function($nombre){
     return [
@@ -55,6 +57,10 @@ Route::prefix("auth")->group(function() {
 
 
 Route::middleware("auth:sanctum")->group(function(){
+
+    // reporte pdf
+    Route::get("/reporte/nota_pdf", [NotaController::class, "funReportePDF"]);
+
 
     // Asignar Role a usuario
     Route::post("/users/{id}/roles", [UsuarioController::class, "funActualizarRoles"]);

@@ -7,15 +7,53 @@ use App\Models\Nota;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class NotaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Nota::with(['user', 'entidad_comercial']);
+
+        // filtros 
+        if($request->has('tipo_nota')){
+            $query->where('tipo_nota', $request->tipo_nota);
+        }
+
+        if($request->has('estado_nota')){
+            $query->where('estado_nota', $request->estado_nota);
+        }
+
+        
+        if($request->has('entidad_comercial_id')){
+            $query->where('entidad_comercial_id', $request->entidad_comercial_id);
+        }
+
+        if($request->has('user_id')){
+            $query->where('user_id', $request->user_id);
+        }
+
+        if($request->has(['fecha_inicio', 'fecha_fin'])){
+            $query->where('fecha_emision', [$request->fecha_inicio, $request->fin]);
+        }
+
+
+        // busqueda global 
+        if($request->has('search')){
+            $query->where(function ($q) use ($request){
+                $q->where('codigo_nota', 'ilike', '%' . $request->search . '%')
+                    ->orWhere('observaciones', 'ilike', '%' . $request->search . '%');
+            });
+        }
+
+        // paginación
+        $notas = $query->orderByDesc('fecha_emision')->paginate(10);
+
+        return response()->json($notas);
+        
     }
 
     /**
@@ -68,9 +106,11 @@ class NotaController extends Controller
             foreach ($request->movimientos as $mov) {
                 // $almacen = Almacen::findOrFail($mov['almacen_id']);
                 // $producto = Producto::findOrFail($mov['producto_id']);
+          
+
                 $nota->almacenes()->attach($mov['almacen_id'], [
                     'producto_id' => $mov['producto_id'],
-                    'cantidad' => $mov['producto_id'],
+                    'cantidad' => $mov['cantidad'],
                     'tipo_movimiento' => $mov['tipo_movimiento'],
                      'precio_unitario_compra' => $mov['precio_unitario_compra'],
                      'precio_unitario_venta' => $mov['precio_unitario_venta'],
@@ -96,23 +136,79 @@ class NotaController extends Controller
                         "fecha_actualizacion" => now(),
                     ]);
                 }else{
-                    
+                    $nuevaCantidad = $pivot->cantidad_actual; 
+
+                    if($mov['tipo_movimiento'] === 'ingreso' || $mov['tipo_movimiento'] === 'devolucion'){
+                        $nuevaCantidad += $mov['cantidad'];
+                    }elseif($mov['tipo_movimiento'] === 'salida'){
+                        if($pivot->cantidad_actual < $mov['cantidad']){
+                            throw new \Exception("Stock Insuficiente en salida");
+                        }
+                        $nuevaCantidad -= $mov['cantidad'];
+                    }
+                    DB::table('almacen_producto')
+                        ->where('almacen_id', $mov['almacen_id'])
+                        ->where('producto_id', $mov['producto_id'])
+                        ->update([
+                            'cantidad_actual' => $nuevaCantidad,
+                            'fecha_actualizacion' => now()
+                        ]);
                 }
-                // $stock = $almacen->productos()
-
-                // existenacias por tipo de movimiento
-
-                // registrar Movimiento
-                // $movimiento = new Movimiento
             }
 
-
-
             DB::commit();
+            return response()->json(['nota' => $nota->load('almacenes')], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(["error" => $e->getMessage()], 500);
         }
+
+    }
+
+    public function funReportePDF(Request $request){
+
+        
+        $query = Nota::with(['user', 'entidad_comercial']);
+
+        // filtros 
+        if($request->has('tipo_nota')){
+            $query->where('tipo_nota', $request->tipo_nota);
+        }
+
+        if($request->has('estado_nota')){
+            $query->where('estado_nota', $request->estado_nota);
+        }
+
+        
+        if($request->has('entidad_comercial_id')){
+            $query->where('entidad_comercial_id', $request->entidad_comercial_id);
+        }
+
+        if($request->has('user_id')){
+            $query->where('user_id', $request->user_id);
+        }
+
+        if($request->has(['fecha_inicio', 'fecha_fin'])){
+            $query->where('fecha_emision', [$request->fecha_inicio, $request->fin]);
+        }
+
+
+        // busqueda global 
+        if($request->has('search')){
+            $query->where(function ($q) use ($request){
+                $q->where('codigo_nota', 'ilike', '%' . $request->search . '%')
+                    ->orWhere('observaciones', 'ilike', '%' . $request->search . '%');
+            });
+        }
+
+        // paginación
+        $notas = $query->orderByDesc('fecha_emision')->get();
+
+
+
+        $pdf = Pdf::loadView('pdf.notas', ["notas" => $notas]);
+
+        return $pdf->download('notas.pdf');
 
     }
 
