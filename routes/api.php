@@ -74,6 +74,9 @@ Route::middleware("auth:sanctum")->group(function(){
     Route::put("/users/{id}", [UsuarioController::class, "funModificar"]);
     Route::delete("/users/{id}", [UsuarioController::class, "funEliminar"]);
     
+    // actualizar imagen
+    Route::post("producto/{id}/actualizar-imagen", [ProductoController::class, "actualizarProductoImagen"]);
+
     // Registro de producto con Subida de Imagen
     Route::post("producto/imagen", [ProductoController::class, "guardarProductoImagen"]);
 

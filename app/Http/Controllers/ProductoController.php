@@ -14,7 +14,7 @@ class ProductoController extends Controller
     {
         $limit = isset($request->limit) ? $request->limit : 10;
         $activo = isset($request->activo)?$request->activo:null;
-        $almacenID = isset($request->almacen)?$request->almacen:'';
+        $almacenID = isset($request->almacen)?$request->almacen:null;
 
 
         $productos = Producto::query();
@@ -25,7 +25,7 @@ class ProductoController extends Controller
 
         if (isset($request->search)) {
             $search = $request->search;
-            $productos = $productos->where('activo',"=",$request->activo)
+            $productos = $productos
                                 ->where("nombre", "iLIKE", "%$search%")
                                 ->orwhere('marca', "iLIKE", "%$search%");
         } 
@@ -59,7 +59,8 @@ class ProductoController extends Controller
                 "unidad_medida" => "required",
                 "categoria_id" => "required",
                 "fecha_registro" => "required",
-                "precio_venta_actual" => "required"
+                "precio_venta_actual" => "required",
+                "stock_minimo" => "required"
             ]);
 
             // guardar
@@ -73,7 +74,7 @@ class ProductoController extends Controller
             $prod->marca = $request->marca;
             $prod->precio_venta_actual = $request->precio_venta_actual;
             $prod->stock_minimo = $request->stock_minimo;
-            $prod->activo = $request->activo;
+            $prod->activo = $request->activo?$request->activo:true;
 
             // subida de imagen
             if ($file = $request->file("imagen")) {
@@ -87,7 +88,7 @@ class ProductoController extends Controller
             return response()->json($prod);
         } catch (\Throwable $th) {
             //throw $th;
-            return response()->json(["message" => "Error al realizar la consulta"]);
+            return response()->json(["message" => "Error al realizar la consulta", "error" => $th->getMessage()]);
         }
 
         // responder
@@ -131,6 +132,29 @@ class ProductoController extends Controller
             $prod->save();
 
             return response()->json(["message" => "Producto Registrado"], 201);
+        } catch (\Throwable $th) {
+            return response()->json(["message" => "Error al realizar la consulta"]);
+        }
+    }
+
+    public function actualizarProductoImagen(Request $request, $id)
+    {
+
+        try {
+
+
+            // guardar
+            $prod = Producto::find($id);
+
+            if ($file = $request->file("imagen")) {
+                $direccion_url = time() . "-" . $file->getClientOriginalName();
+                $file->move("imagenes", $direccion_url);
+                $prod->imagen_url = "imagenes/" . $direccion_url;
+            }
+
+            $prod->update();
+
+            return response()->json(["message" => "Imagen Actualizado"], 201);
         } catch (\Throwable $th) {
             return response()->json(["message" => "Error al realizar la consulta"]);
         }
