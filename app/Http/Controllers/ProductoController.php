@@ -38,7 +38,7 @@ class ProductoController extends Controller
                 
         }
 
-        $productos = $productos->with(['categoria'])
+        $productos = $productos->with(['categoria', 'almacens'])
                     ->orderBy('id', 'desc')
                     ->paginate($limit);
 

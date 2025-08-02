@@ -64,10 +64,10 @@ class NotaController extends Controller
         // validacion
         $validated = $request->validate([
             "codigo_nota" => "required|string|unique:notas,codigo_nota",
-            "fecha_emision" => "required|date",
+            "fecha_emision" => "nullable|date",
             "tipo_nota" => "required|in:venta,compra,devolucion",
             "entidad_comercial_id" => "required|exists:entidad_comercials,id",
-            "user_id" => "required|exists:users,id",
+            "user_id" => "nullable|exists:users,id",
             "subtotal" => "nullable|numeric",
             "impuestos" => "nullable|numeric",
             "descuento_total" => "nullable|numeric",
@@ -89,12 +89,15 @@ class NotaController extends Controller
 
         try {
 
+            
+
             $nota = new Nota();
             $nota->codigo_nota = $request->codigo_nota;
-            $nota->fecha_emision = $request->fecha_emision;
+            $nota->fecha_emision = date("Y-m-d H:i:s");;
             $nota->tipo_nota = $request->tipo_nota;
             $nota->entidad_comercial_id = $request->entidad_comercial_id;
-            $nota->user_id = $request->user_id;
+            // $nota->user_id = $request->user_id;
+            $nota->user_id = $request->user()->id;
             $nota->subtotal = $request->subtotal;
             $nota->impuestos = $request->impuestos;
             $nota->descuento_total = $request->descuento_total;
